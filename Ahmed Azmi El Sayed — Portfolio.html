@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ahmed Azmi El Sayed — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: #161616;
+    --accent: #e8b84b;
+    --accent2: #c0392b;
+    --text: #f0ece3;
+    --muted: #888;
+    --border: rgba(232,184,75,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(10,10,10,0.88); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 3px; color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: .85rem; letter-spacing: 2px; text-transform: uppercase; transition: color .3s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 8rem 3rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(232,184,75,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(192,57,43,0.08) 0%, transparent 60%);
+  }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%; position: relative; }
+  .hero-label { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; opacity: 0; animation: fadeUp .6s .2s forwards; }
+  .hero-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 7vw, 7rem); line-height: .95; letter-spacing: 2px; opacity: 0; animation: fadeUp .6s .35s forwards; }
+  .hero-name span { color: var(--accent); }
+  .hero-tagline { margin-top: 1.5rem; font-size: 1rem; line-height: 1.8; color: var(--muted); max-width: 440px; opacity: 0; animation: fadeUp .6s .5s forwards; }
+  .hero-roles { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2rem; opacity: 0; animation: fadeUp .6s .65s forwards; }
+  .role-pill { padding: .4rem 1rem; border: 1px solid var(--border); border-radius: 999px; font-size: .78rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); background: rgba(232,184,75,0.05); }
+  .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; opacity: 0; animation: fadeUp .6s .8s forwards; }
+  .btn { padding: .75rem 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: .9rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; text-decoration: none; transition: all .3s; display: inline-block; }
+  .btn-primary { background: var(--accent); color: #0a0a0a; }
+  .btn-primary:hover { background: #f5cc6a; }
+  .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+  .btn-outline:hover { background: rgba(232,184,75,0.1); }
+
+  .hero-visual { display: flex; justify-content: center; align-items: center; opacity: 0; animation: fadeIn .8s .4s forwards; }
+  .camera-frame {
+    width: 320px; height: 320px; border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    background: radial-gradient(circle at 40% 40%, rgba(232,184,75,0.08), transparent 70%);
+  }
+  .camera-frame::before {
+    content: ''; position: absolute; inset: -12px; border-radius: 50%;
+    border: 1px dashed rgba(232,184,75,0.2);
+    animation: spinSlow 20s linear infinite;
+  }
+
+  section { padding: 6rem 3rem; }
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-eyebrow { font-size: .7rem; letter-spacing: 5px; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 2px; line-height: 1; }
+  .section-title span { color: var(--accent); }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .skill-card { background: var(--card); border: 1px solid var(--border); padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: transform .3s, border-color .3s; }
+  .skill-card:hover { transform: translateY(-6px); border-color: rgba(232,184,75,0.4); }
+  .skill-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+  .skill-card:hover::after { transform: scaleX(1); }
+  .skill-icon { font-size: 2.8rem; margin-bottom: 1.2rem; display: block; }
+  .skill-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 1px; margin-bottom: .5rem; }
+  .skill-desc { color: var(--muted); font-size: .88rem; line-height: 1.7; }
+  .skill-badge { display: inline-block; margin-top: 1rem; padding: .25rem .75rem; background: rgba(232,184,75,0.08); border: 1px solid var(--border); font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+
+  #education { background: var(--surface); }
+  .edu-card { max-width: 700px; margin: 0 auto; background: var(--card); border: 1px solid var(--border); padding: 3rem; position: relative; }
+  .edu-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, var(--accent), var(--accent2)); }
+  .edu-year { font-family: 'Barlow Condensed', sans-serif; font-size: .75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+  .edu-degree { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 1px; line-height: 1.1; margin-bottom: .75rem; }
+  .edu-school { color: var(--muted); font-size: .95rem; line-height: 1.7; }
+
+  #gallery { background: var(--bg); }
+  .upload-zone { max-width: 900px; margin: 0 auto; }
+  .upload-tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .tab-btn { padding: .8rem 2rem; background: none; border: none; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: .9rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .3s; }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .drop-area { border: 2px dashed rgba(232,184,75,0.3); padding: 3.5rem 2rem; text-align: center; cursor: pointer; transition: all .3s; margin-bottom: 2rem; position: relative; }
+  .drop-area:hover, .drop-area.dragover { border-color: var(--accent); background: rgba(232,184,75,0.04); }
+  .drop-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .drop-icon { font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent); }
+  .drop-label { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .drop-sub { font-size: .8rem; color: #555; margin-top: .5rem; }
+
+  .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1rem; }
+  .media-item { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--card); border: 1px solid var(--border); cursor: pointer; }
+  .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .media-item:hover img, .media-item:hover video { transform: scale(1.05); }
+  .media-item .remove-btn { position: absolute; top: .5rem; right: .5rem; z-index: 10; background: rgba(180,30,30,.85); color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: .85rem; line-height: 1; opacity: 0; transition: opacity .3s, background .2s; }
+  .media-item:hover .remove-btn { opacity: 1; }
+  .media-item .remove-btn:hover { background: rgba(220,30,30,1); }
+
+  .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.93); align-items: center; justify-content: center; }
+  .lightbox.open { display: flex; }
+  .lightbox-inner { position: relative; max-width: 90vw; max-height: 90vh; }
+  .lightbox-inner img, .lightbox-inner video { max-width: 90vw; max-height: 85vh; object-fit: contain; }
+  .lb-close { position: absolute; top: -2.5rem; right: 0; background: none; border: none; color: var(--accent); font-size: 1.5rem; cursor: pointer; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
+
+  #contact { background: var(--surface); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1000px; margin: 0 auto; align-items: start; }
+  .contact-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px; margin-bottom: 1.5rem; }
+  .contact-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+  .contact-icon { font-size: 1.3rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+  .contact-label { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: .25rem; }
+  .contact-value { color: var(--text); font-size: .95rem; text-decoration: none; transition: color .3s; display: block; }
+  .contact-value:hover { color: var(--accent); }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-field { display: flex; flex-direction: column; gap: .4rem; }
+  .form-field label { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+  .form-field input, .form-field textarea { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: .9rem 1rem; font-family: 'Barlow', sans-serif; font-size: .9rem; outline: none; transition: border-color .3s; resize: vertical; }
+  .form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+  .form-field textarea { min-height: 130px; }
+
+  footer { text-align: center; padding: 2.5rem 3rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .8rem; letter-spacing: 1px; }
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">A·A·E</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-grid">
+    <div>
+      <p class="hero-label">Portfolio — Creative Professional</p>
+      <h1 class="hero-name">Ahmed<br><span>Azmi</span><br>El Sayed</h1>
+      <p class="hero-tagline">Capturing the soul of machines through a lens — creating visual stories that move at the speed of life.</p>
+      <div class="hero-roles">
+        <span class="role-pill">📷 Car Photography</span>
+        <span class="role-pill">🎬 Video Editing</span>
+        <span class="role-pill">🎨 Graphic Design</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#gallery" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="camera-frame">
+        <div style="text-align:center">
+          <div style="font-size:5rem">📷</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:3px;color:var(--accent);margin-top:.5rem">Through The Lens</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-header">
+    <p class="section-eyebrow">What I Do</p>
+    <h2 class="section-title">Skills &amp; <span>Expertise</span></h2>
+  </div>
+  <div class="skills-grid">
+
+    <div class="skill-card">
+      <span class="skill-icon">📷</span>
+      <div class="skill-name">Car Photography</div>
+      <p class="skill-desc">Specializing in automotive photography — capturing the power, elegance, and character of every vehicle through creative framing, lighting, and composition.</p>
+      <span class="skill-badge">Photography</span>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="10" fill="#1a1a2e"/>
+          <circle cx="22" cy="22" r="13" fill="none" stroke="#e8b84b" stroke-width="2.2"/>
+          <circle cx="22" cy="22" r="5.5" fill="#e8b84b"/>
+          <line x1="22" y1="9" x2="22" y2="35" stroke="#e8b84b" stroke-width="1.2" opacity=".35"/>
+          <line x1="9" y1="22" x2="35" y2="22" stroke="#e8b84b" stroke-width="1.2" opacity=".35"/>
+        </svg>
+      </span>
+      <div class="skill-name">Video Editing</div>
+      <p class="skill-desc">Professional video editing using DaVinci Resolve — color grading, motion graphics, and cinematic cuts that bring automotive stories to life.</p>
+      <span class="skill-badge">DaVinci Resolve</span>
+    </div>
+
+    <div class="skill-card">
+      <span class="skill-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+          <rect width="44" height="44" rx="10" fill="#001e36"/>
+          <text x="6" y="32" font-family="Georgia, serif" font-size="24" font-weight="bold" fill="#31a8ff">Ps</text>
+        </svg>
+      </span>
+      <div class="skill-name">Graphic Design</div>
+      <p class="skill-desc">Creating impactful visual identities, photo retouching, and digital composites using Adobe Photoshop to deliver polished, professional results.</p>
+      <span class="skill-badge">Adobe Photoshop</span>
+    </div>
+
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-header">
+    <p class="section-eyebrow">Academic Background</p>
+    <h2 class="section-title">My <span>Education</span></h2>
+  </div>
+  <div class="edu-card">
+    <p class="edu-year">Currently Enrolled</p>
+    <div class="edu-degree">Computer Science &amp;<br>Artificial Intelligence</div>
+    <p class="edu-school">Tanta National University<br>Faculty of Computer Science and Artificial Intelligence — Tanta, Egypt</p>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="section-header">
+    <p class="section-eyebrow">Creative Work</p>
+    <h2 class="section-title">Photos &amp; <span>Videos</span></h2>
+  </div>
+  <div class="upload-zone">
+    <div class="upload-tabs">
+      <button class="tab-btn active" onclick="switchTab('photos',this)">📷 Photos</button>
+      <button class="tab-btn" onclick="switchTab('videos',this)">🎬 Videos</button>
+    </div>
+
+    <div class="tab-content active" id="tab-photos">
+      <div class="drop-area" id="photo-drop">
+        <input type="file" accept="image/*" multiple onchange="handleFiles(this.files,'photos')" />
+        <div class="drop-icon">📸</div>
+        <div class="drop-label">Drop photos here or click to browse</div>
+        <div class="drop-sub">JPG, PNG, WEBP — any size</div>
+      </div>
+      <div class="media-grid" id="photo-grid"></div>
+    </div>
+
+    <div class="tab-content" id="tab-videos">
+      <div class="drop-area" id="video-drop">
+        <input type="file" accept="video/*" multiple onchange="handleFiles(this.files,'videos')" />
+        <div class="drop-icon">🎥</div>
+        <div class="drop-label">Drop videos here or click to browse</div>
+        <div class="drop-sub">MP4, MOV, AVI, MKV — any size</div>
+      </div>
+      <div class="media-grid" id="video-grid"></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-header">
+    <p class="section-eyebrow">Let's Work Together</p>
+    <h2 class="section-title">Get In <span>Touch</span></h2>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Ahmed Azmi<br>El Sayed</h3>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <a href="mailto:azmi50965@gmail.com" class="contact-value">azmi50965@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-label">Phone / WhatsApp</div>
+          <a href="https://wa.me/201101959402" target="_blank" class="contact-value">+20 110 195 9402</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Location</div>
+          <span class="contact-value">Egypt</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form">
+      <div class="form-field">
+        <label>Your Name</label>
+        <input type="text" placeholder="e.g. Mohamed Ali" />
+      </div>
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com" />
+      </div>
+      <div class="form-field">
+        <label>Message</label>
+        <textarea placeholder="Tell me about your project..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="alert('For now, reach out directly via email or WhatsApp!')">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span>Ahmed Azmi El Sayed</span> — All Rights Reserved &nbsp;·&nbsp; Car Photography · Video Editing · Graphic Design</p>
+</footer>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <button class="lb-close" onclick="closeLightbox()">✕ Close</button>
+    <div id="lb-content"></div>
+  </div>
+</div>
+
+<script>
+  // ── IndexedDB setup ──────────────────────────────────────────────
+  const DB_NAME = 'ahmed-portfolio', DB_VER = 1, STORE = 'media';
+  let db;
+
+  function openDB() {
+    return new Promise((res, rej) => {
+      const req = indexedDB.open(DB_NAME, DB_VER);
+      req.onupgradeneeded = e => e.target.result.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+      req.onsuccess = e => { db = e.target.result; res(db); };
+      req.onerror = () => rej(req.error);
+    });
+  }
+
+  function saveMedia(file, type) {
+    return new Promise((res, rej) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      const req = tx.objectStore(STORE).add({ type, name: file.name, blob: file });
+      req.onsuccess = () => res(req.result); // returns new id
+      req.onerror = () => rej(req.error);
+    });
+  }
+
+  function deleteMedia(id) {
+    return new Promise((res, rej) => {
+      const tx = db.transaction(STORE, 'readwrite');
+      const req = tx.objectStore(STORE).delete(id);
+      req.onsuccess = res; req.onerror = () => rej(req.error);
+    });
+  }
+
+  function loadAllMedia() {
+    return new Promise((res, rej) => {
+      const tx = db.transaction(STORE, 'readonly');
+      const req = tx.objectStore(STORE).getAll();
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+    });
+  }
+
+  // ── Drag & drop ──────────────────────────────────────────────────
+  ['photo-drop','video-drop'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dragover'); });
+    el.addEventListener('dragleave', () => el.classList.remove('dragover'));
+    el.addEventListener('drop', e => {
+      e.preventDefault(); el.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files, id === 'photo-drop' ? 'photos' : 'videos');
+    });
+  });
+
+  // ── Handle new file uploads ───────────────────────────────────────
+  async function handleFiles(files, type) {
+    for (const file of Array.from(files)) {
+      const id = await saveMedia(file, type);
+      const url = URL.createObjectURL(file);
+      renderItem({ id, type, blob: file }, url);
+    }
+  }
+
+  // ── Render one media item in the grid ────────────────────────────
+  function renderItem(record, url) {
+    const { id, type } = record;
+    const grid = document.getElementById(type === 'photos' ? 'photo-grid' : 'video-grid');
+    const item = document.createElement('div');
+    item.className = 'media-item';
+    item.dataset.id = id;
+
+    if (type === 'photos') {
+      const img = document.createElement('img');
+      img.src = url; img.loading = 'lazy';
+      img.onclick = () => openLightbox('img', url);
+      item.appendChild(img);
+      appendRemoveBtn(item, id);
+      grid.appendChild(item);
+
+    } else {
+      // Generate thumbnail, then render
+      const canvas = document.createElement('canvas');
+      const tmpVid = document.createElement('video');
+      tmpVid.src = url; tmpVid.muted = true; tmpVid.preload = 'metadata';
+      tmpVid.currentTime = 1;
+
+      const finish = (poster) => {
+        const thumb = document.createElement('img');
+        thumb.src = poster || '';
+        thumb.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:opacity .3s;';
+
+        const playIcon = document.createElement('div');
+        playIcon.innerHTML = '▶';
+        playIcon.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(255,255,255,.85);text-shadow:0 2px 8px rgba(0,0,0,.6);pointer-events:none;transition:opacity .3s;z-index:2;';
+
+        const vid = document.createElement('video');
+        vid.src = url; vid.muted = true; vid.loop = true; vid.preload = 'none';
+        vid.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0;transition:opacity .3s;';
+
+        item.appendChild(thumb);
+        item.appendChild(playIcon);
+        item.appendChild(vid);
+
+        item.addEventListener('mouseenter', () => {
+          vid.play().catch(()=>{});
+          vid.style.opacity = '1'; thumb.style.opacity = '0'; playIcon.style.opacity = '0';
+        });
+        item.addEventListener('mouseleave', () => {
+          vid.pause(); vid.currentTime = 0;
+          vid.style.opacity = '0'; thumb.style.opacity = '1'; playIcon.style.opacity = '1';
+        });
+        item.addEventListener('click', () => openLightbox('video', url));
+
+        appendRemoveBtn(item, id);
+        grid.appendChild(item);
+        tmpVid.src = '';
+      };
+
+      tmpVid.addEventListener('seeked', () => {
+        canvas.width = tmpVid.videoWidth || 320;
+        canvas.height = tmpVid.videoHeight || 180;
+        canvas.getContext('2d').drawImage(tmpVid, 0, 0, canvas.width, canvas.height);
+        finish(canvas.toDataURL('image/jpeg', 0.7));
+      }, { once: true });
+      tmpVid.addEventListener('error', () => finish(''), { once: true });
+    }
+  }
+
+  function appendRemoveBtn(item, id) {
+    const btn = document.createElement('button');
+    btn.className = 'remove-btn'; btn.textContent = '✕';
+    btn.onclick = async (e) => {
+      e.stopPropagation();
+      await deleteMedia(id);
+      item.remove();
+    };
+    item.appendChild(btn);
+  }
+
+  // ── Load persisted media on startup ─────────────────────────────
+  async function loadSaved() {
+    await openDB();
+    const records = await loadAllMedia();
+    for (const record of records) {
+      const url = URL.createObjectURL(record.blob);
+      renderItem(record, url);
+    }
+  }
+  loadSaved();
+
+  // ── Tab switching ────────────────────────────────────────────────
+  function switchTab(tab, el) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    el.classList.add('active');
+  }
+
+  // ── Lightbox ─────────────────────────────────────────────────────
+  function openLightbox(type, src) {
+    const cnt = document.getElementById('lb-content');
+    cnt.innerHTML = type === 'img'
+      ? `<img src="${src}" />`
+      : `<video src="${src}" controls autoplay style="max-width:90vw;max-height:85vh;"></video>`;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lb-content').innerHTML = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
